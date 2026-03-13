@@ -174,7 +174,6 @@ _SKIP_DIRS = {
     ".pytest_cache",
     "dist",
     "build",
-    "*.egg-info",
 }
 
 

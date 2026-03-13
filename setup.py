@@ -63,6 +63,7 @@ setup(
     install_requires=[
         "click>=8.0",
         "colorama>=0.4.4",
+        "reportlab>=4.0",
     ],
     entry_points={
         "console_scripts": [
