@@ -110,7 +110,7 @@ def scan_file(file_path: str | Path) -> List[Finding]:
                 variable_name="N/A",
                 secret_type="File Read Error",
                 severity=WARNING,
-                raw_value=str(exc),
+                raw_value=f"[OS Error {exc.errno}]",  # errno only – avoid leaking full path
                 remediation="Check file permissions.",
             )
         )

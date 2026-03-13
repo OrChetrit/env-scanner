@@ -174,12 +174,33 @@ def scan(
     # PDF export (optional)
     # -----------------------------------------------------------------------
     if pdf_output:
+        pdf_path = Path(pdf_output).resolve()
+
+        # Security: enforce .pdf extension
+        if pdf_path.suffix.lower() != ".pdf":
+            print_error("PDF output filename must end with .pdf")
+            sys.exit(1)
+
+        # Security: refuse to silently overwrite an existing file
+        if pdf_path.exists():
+            print_error(f"PDF output file already exists: {pdf_path}. Delete it first or choose a different name.")
+            sys.exit(1)
+
+        # Security: ensure the parent directory exists and is accessible
+        if not pdf_path.parent.exists():
+            print_error(f"Output directory does not exist: {pdf_path.parent}")
+            sys.exit(1)
+
         scanned_target = file if file else directory
         try:
-            export_pdf(result, pdf_output, scanned_target)
-            print_info(f"PDF report saved to: {pdf_output}")
-        except Exception as exc:
-            print_error(f"Failed to generate PDF: {exc}")
+            export_pdf(result, pdf_path, scanned_target)
+            print_info(f"PDF report saved to: {pdf_path}")
+        except PermissionError:
+            print_error("Permission denied writing PDF. Check the output path.")
+        except OSError as exc:
+            print_error(f"Failed to write PDF (OS error {exc.errno}).")
+        except Exception:
+            print_error("Failed to generate PDF. Check the output path and try again.")
 
     # Exit with non-zero code when secrets are found so CI pipelines can fail.
     if result.total_findings > 0:

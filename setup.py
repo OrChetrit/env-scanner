@@ -61,9 +61,9 @@ setup(
     packages=find_packages(exclude=["tests*", "docs*"]),
     python_requires=">=3.8",
     install_requires=[
-        "click>=8.0",
-        "colorama>=0.4.4",
-        "reportlab>=4.0",
+        "click~=8.0",       # compatible with 8.x; blocks major-version jumps
+        "colorama~=0.4",    # compatible with 0.4.x
+        "reportlab~=4.0",   # compatible with 4.x; blocks major-version jumps
     ],
     entry_points={
         "console_scripts": [

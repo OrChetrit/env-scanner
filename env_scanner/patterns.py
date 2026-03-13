@@ -42,7 +42,7 @@ PATTERNS = [
     },
     {
         "name": "AWS Session Token",
-        "regex": re.compile(r"(?i)(aws_session_token)\s*=\s*['\"]?([A-Za-z0-9/+=]{100,})['\"]?"),
+        "regex": re.compile(r"(?i)(aws_session_token)\s*=\s*['\"]?([A-Za-z0-9/+=]{100,2048})['\"]?"),
         "severity": CRITICAL,
         "remediation": "Invalidate this session token via AWS STS and rotate the underlying credentials.",
     },
@@ -156,13 +156,13 @@ PATTERNS = [
     # -----------------------------------------------------------------------
     {
         "name": "Slack Bot Token",
-        "regex": re.compile(r"(?i)(slack[_\-]?(?:bot[_\-]?)?token)\s*=\s*['\"]?(xoxb-[0-9A-Za-z\-]{24,})['\"]?"),
+        "regex": re.compile(r"(?i)(slack[_\-]?(?:bot[_\-]?)?token)\s*=\s*['\"]?(xoxb-[0-9A-Za-z\-]{24,200})['\"]?"),
         "severity": CRITICAL,
         "remediation": "Revoke this token at api.slack.com/apps and regenerate it.",
     },
     {
         "name": "Slack User Token",
-        "regex": re.compile(r"(?i)(slack[_\-]?(?:user[_\-]?)?token)\s*=\s*['\"]?(xoxp-[0-9A-Za-z\-]{24,})['\"]?"),
+        "regex": re.compile(r"(?i)(slack[_\-]?(?:user[_\-]?)?token)\s*=\s*['\"]?(xoxp-[0-9A-Za-z\-]{24,200})['\"]?"),
         "severity": CRITICAL,
         "remediation": "Revoke this user token at api.slack.com/apps immediately.",
     },
@@ -183,7 +183,7 @@ PATTERNS = [
     },
     {
         "name": "GCP Service Account Key (JSON)",
-        "regex": re.compile(r"(?i)(google[_\-]?application[_\-]?credentials|gcp[_\-]?credentials)\s*=\s*['\"]?(\{.*\"private_key\".*\}|/[^\s'\"]+\.json)['\"]?"),
+        "regex": re.compile(r"(?i)(google[_\-]?application[_\-]?credentials|gcp[_\-]?credentials)\s*=\s*['\"]?(\{[^}]{0,4096}\"private_key\"[^}]{0,4096}\}|/[^\s'\"]{1,512}\.json)['\"]?"),
         "severity": CRITICAL,
         "remediation": "Delete this service account key in GCP IAM and create a new one with least-privilege.",
     },
@@ -288,25 +288,25 @@ PATTERNS = [
     # -----------------------------------------------------------------------
     {
         "name": "Generic Password",
-        "regex": re.compile(r"(?i)^(password|passwd|pass|db_pass(?:word)?|database_pass(?:word)?)\s*=\s*['\"]?([^\s'\"]{6,})['\"]?"),
+        "regex": re.compile(r"(?i)^(password|passwd|pass|db_pass(?:word)?|database_pass(?:word)?)\s*=\s*['\"]?([^\s'\"]{6,512})['\"]?"),
         "severity": CRITICAL,
         "remediation": "Rotate this password and store it in a secrets manager (AWS Secrets Manager, HashiCorp Vault, etc.).",
     },
     {
         "name": "Generic Secret",
-        "regex": re.compile(r"(?i)^(secret|app_secret|secret_key|api_secret)\s*=\s*['\"]?([^\s'\"]{6,})['\"]?"),
+        "regex": re.compile(r"(?i)^(secret|app_secret|secret_key|api_secret)\s*=\s*['\"]?([^\s'\"]{6,512})['\"]?"),
         "severity": CRITICAL,
         "remediation": "Rotate this secret and store it in a dedicated secrets manager.",
     },
     {
         "name": "Generic API Key",
-        "regex": re.compile(r"(?i)^(api_key|apikey|access_key|access_token|auth_token)\s*=\s*['\"]?([A-Za-z0-9_\-]{16,})['\"]?"),
+        "regex": re.compile(r"(?i)^(api_key|apikey|access_key|access_token|auth_token)\s*=\s*['\"]?([A-Za-z0-9_\-]{16,256})['\"]?"),
         "severity": WARNING,
         "remediation": "Rotate this credential and avoid committing API keys to version control.",
     },
     {
         "name": "Generic Token",
-        "regex": re.compile(r"(?i)^(token|auth_token|bearer_token|access_token)\s*=\s*['\"]?([A-Za-z0-9_.\-]{20,})['\"]?"),
+        "regex": re.compile(r"(?i)^(token|auth_token|bearer_token|access_token)\s*=\s*['\"]?([A-Za-z0-9_.\-]{20,512})['\"]?"),
         "severity": WARNING,
         "remediation": "Rotate this token and use a secrets manager for storage.",
     },

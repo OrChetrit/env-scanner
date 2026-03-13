@@ -14,6 +14,7 @@ from __future__ import annotations
 from datetime import date
 from pathlib import Path
 from typing import List, Tuple
+import html
 
 from reportlab.lib import colors
 from reportlab.lib.pagesizes import A4
@@ -210,8 +211,8 @@ def _stat_table(result: ScanResult) -> Table:
 def _meta_table(scan_date: str, target: str, files_scanned: int) -> Table:
     s = _build_styles()
     rows = [
-        [Paragraph("<b>Scan Date</b>", s["meta_label"]),  Paragraph(scan_date, s["meta_value"])],
-        [Paragraph("<b>Target</b>",    s["meta_label"]),  Paragraph(target,    s["meta_value"])],
+        [Paragraph("<b>Scan Date</b>", s["meta_label"]),  Paragraph(html.escape(scan_date), s["meta_value"])],
+        [Paragraph("<b>Target</b>",    s["meta_label"]),  Paragraph(html.escape(str(target)), s["meta_value"])],
         [Paragraph("<b>Files Scanned</b>", s["meta_label"]), Paragraph(str(files_scanned), s["meta_value"])],
     ]
     col_w = PAGE_W - MARGIN_L - MARGIN_R
