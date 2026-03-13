@@ -1,0 +1,9 @@
+{
+    "include": [
+        "env_scanner"
+    ],
+    "pythonVersion": "3.11",
+    "typeCheckingMode": "basic",
+    "reportMissingImports": true,
+    "reportMissingModuleSource": false
+}
