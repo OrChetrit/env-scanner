@@ -171,9 +171,9 @@ def print_findings(result: ScanResult, show_clean: bool = True) -> None:
     global_index = 1
     for file_path, findings in findings_by_file.items():
         print()
-        print(_thick_separator())
+        print(_THICK_SEP)
         print(f"  File: {_cyan(file_path)}")
-        print(_thick_separator())
+        print(_THICK_SEP)
 
         for finding in findings:
             print(_format_finding(finding, global_index))
@@ -183,10 +183,6 @@ def print_findings(result: ScanResult, show_clean: bool = True) -> None:
     print()
     print(_THICK_SEP)
     _print_summary(result, show_clean)
-
-
-def _thick_separator() -> str:
-    return _dim("═" * 72)
 
 
 def _print_summary(result: ScanResult, show_clean: bool) -> None:

@@ -23,6 +23,7 @@ from .formatters import (
     print_info,
 )
 from .scanner import scan_directory, scan_single_file
+from .exporter import export_pdf
 
 
 # ---------------------------------------------------------------------------
@@ -86,6 +87,13 @@ def cli() -> None:
     show_default=True,
     help="Filter findings by minimum severity.",
 )
+@click.option(
+    "--pdf",
+    "pdf_output",
+    default=None,
+    metavar="FILENAME",
+    help="Export results to a PDF report (e.g. --pdf report.pdf).",
+)
 def scan(
     file: str | None,
     directory: str | None,
@@ -93,6 +101,7 @@ def scan(
     no_banner: bool,
     quiet: bool,
     severity: str,
+    pdf_output: str | None,
 ) -> None:
     """
     Scan .env file(s) for exposed secrets and credentials.
@@ -106,6 +115,10 @@ def scan(
       Scan all .env files under a directory:
         env-scanner scan --dir ./project
         env-scanner scan --dir . --no-recursive
+
+      Export results to PDF:
+        env-scanner scan .env --pdf report.pdf
+        env-scanner scan --dir . --pdf audit.pdf
     """
     if not no_banner:
         print_banner()
@@ -156,6 +169,17 @@ def scan(
     # Output
     # -----------------------------------------------------------------------
     print_findings(result, show_clean=not quiet)
+
+    # -----------------------------------------------------------------------
+    # PDF export (optional)
+    # -----------------------------------------------------------------------
+    if pdf_output:
+        scanned_target = file if file else directory
+        try:
+            export_pdf(result, pdf_output, scanned_target)
+            print_info(f"PDF report saved to: {pdf_output}")
+        except Exception as exc:
+            print_error(f"Failed to generate PDF: {exc}")
 
     # Exit with non-zero code when secrets are found so CI pipelines can fail.
     if result.total_findings > 0:
