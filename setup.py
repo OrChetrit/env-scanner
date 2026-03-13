@@ -10,7 +10,7 @@ Install normally:
 After installation the ``env-scanner`` command will be available in PATH.
 """
 
-from setuptools import setup, find_packages
+from setuptools import setup, find_packages  # type: ignore
 from pathlib import Path
 
 # Read the long description from README.md

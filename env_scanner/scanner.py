@@ -68,7 +68,7 @@ def _redact(value: str, keep: int = 4) -> str:
     """Return a partially redacted version of *value* for display."""
     if len(value) <= keep:
         return "*" * len(value)
-    return value[:keep] + "*" * min(len(value) - keep, 20)
+    return value[0:keep] + "*" * min(len(value) - keep, 20)  # type: ignore
 
 
 def _extract_variable_name(line: str) -> Optional[str]:
@@ -215,7 +215,9 @@ def scan_directory(directory: str | Path, recursive: bool = True) -> ScanResult:
 
     for root, dirs, files in walk_iter:
         # Prune skipped directories in-place so os.walk won't descend.
-        dirs[:] = [d for d in dirs if d not in _SKIP_DIRS and not d.endswith(".egg-info")]
+        new_dirs = [d for d in dirs if d not in _SKIP_DIRS and not d.endswith(".egg-info")]
+        dirs.clear()
+        dirs.extend(new_dirs)
 
         for filename in files:
             if not _is_env_file(filename):
