@@ -27,7 +27,7 @@ setup(
     ),
     long_description=long_description,
     long_description_content_type="text/markdown",
-    url="https://github.com/yourusername/env-scanner",
+    url="https://github.com/OrChetrit/env-scanner",
     license="MIT",
     classifiers=[
         "Development Status :: 5 - Production/Stable",
@@ -70,7 +70,7 @@ setup(
         ],
     },
     project_urls={
-        "Bug Reports": "https://github.com/yourusername/env-scanner/issues",
-        "Source": "https://github.com/yourusername/env-scanner",
+        "Bug Reports": "https://github.com/OrChetrit/env-scanner/issues",
+        "Source": "https://github.com/OrChetrit/env-scanner",
     },
 )
