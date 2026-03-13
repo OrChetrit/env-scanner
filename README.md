@@ -300,7 +300,7 @@ print(f"Total patterns: {len(PATTERNS)}")
 
 ## License
 
-MIT © env-scanner contributors
+MIT © 2026 Or Chetrit
 
 ---
 

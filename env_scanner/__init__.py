@@ -11,7 +11,7 @@ Exposes the public API surface:
 """
 
 __version__ = "1.0.0"
-__author__ = "env-scanner"
+__author__ = "Or Chetrit"
 __license__ = "MIT"
 
 from .scanner import Finding, ScanResult, scan_directory, scan_file, scan_single_file

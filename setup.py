@@ -20,7 +20,7 @@ long_description = (HERE / "README.md").read_text(encoding="utf-8")
 setup(
     name="env-scanner",
     version="1.0.0",
-    author="env-scanner",
+    author="Or Chetrit",
     description=(
         "Detect 40+ exposed secret patterns in .env files – "
         "AWS keys, database passwords, API tokens and more."
